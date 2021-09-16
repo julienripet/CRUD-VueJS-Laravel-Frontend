@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>test</p>
+    <InputText> </InputText>
     <Button label="test"> </Button>
   </div>
 </template>
@@ -10,6 +10,9 @@
 export default {
   name: 'App',
   components: {
+
+  },
+  created () {
 
   }
 }
