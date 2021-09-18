@@ -1,16 +1,17 @@
 <template>
   <div>
-    <InputText> </InputText>
-    <Button label="test"> </Button>
+    <ListArticles />
   </div>
 </template>
 
 <script>
+import ListArticles from "./components/ListArticles.vue"
+
 
 export default {
   name: 'App',
   components: {
-
+    ListArticles,
   },
   created () {
 

@@ -8,6 +8,9 @@ import "./assets/themes/default.css"                //theme
 import "primevue/resources/primevue.min.css"        //core css
 import "primeicons/primeicons.css"                  //icons
 
+import 'primeflex/primeflex.css';
+
+
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button'

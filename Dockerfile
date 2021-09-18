@@ -15,6 +15,9 @@ RUN npm install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
+# switch default terminal to bash instead of sh
+SHELL ["/bin/bash", "-c"]
+
 # build app for production with minification
 # RUN npm run build
 
