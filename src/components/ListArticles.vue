@@ -1,14 +1,16 @@
 <template>
   <DataTable
     class="
+      p-datatable-sm
       p-shadow-10
       p-mx-sm-0
       p-mx-md-3
       p-mx-xl-6
+      p-my-6
       p-px-sm-0
       p-px-xl-3
-      table
       p-text-center
+      table
     "
     :value="articles"
     :loading="loading"
@@ -18,6 +20,7 @@
     paginator
     paginatorPosition="both"
     breakpoint="1024px"
+    :autoLayout="true"
   >
 
     <template #empty>
@@ -73,7 +76,7 @@
     <!-- Numéro de série -->
     <Column
       :sortable="true"
-      headerClass="p-text-center p-mx-auto"
+      headerClass="p-text-center p-mx-auto header-SR"
       bodyClass="p-text-center p-mx-auto"
       field="serial_number"
       header="Numéro de série"
@@ -137,20 +140,79 @@
       </template>
     </Column>
 
+    <!-- Bouton éditer   -->
+    <Column
+      header="Modifier"
+      headerClass="p-text-center p-mx-auto"
+      bodyClass="p-text-center p-mx-auto"
+      :exportable="false"
+    >
+      <template #body="slotProps">
+        <Button
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success p-mr-2"
+          @click="editArticle(slotProps.data)"
+        />
+      </template>
+    </Column>
+
+    <!-- bouton supprimer -->
+    <Column
+      header="Supprimer l'article"
+      headerClass="p-text-center p-mx-auto"
+      bodyClass="p-text-center p-mx-auto"
+      :exportable="false"
+    >
+      <template #body="slotProps">
+        <Button
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-warning"
+          @click="confirmDeleteArticle(slotProps.data)"
+        />
+      </template>
+    </Column>
   </DataTable>
+  <Dialog
+    v-model:visible="askDelete"
+    header="Confirmation"
+    :modal="true"
+  >
+
+    <p>Etes-vous sûr de vouloir supprimer l'article {{articleToDelete.denomination}}</p>
+    <template #footer>
+      <Button
+        @click="closeDialog"
+        label="Non"
+        icon="pi pi-times"
+        class="p-button-text"
+        style="color: var(--text-color)"
+      />
+      <Button
+        label="Oui"
+        icon="pi pi-check"
+        class="p-button-text"
+        style="color: var(--primary-color)"
+        autofocus
+        @click="deleteArticle"
+      />
+    </template>
+  </Dialog>
 
 </template>
 
 <script>
-import { fetchAllArticles } from "../api/ArticleService"
+import { fetchAllArticles, deleteArticle } from "../api/ArticleService"
 import { DateTime } from "luxon";
 
 
 export default {
+  name: "ListArticles",
   data () {
     return {
       articles: [],
       loading: true,
+      askDelete: false,
+      articleToDelete: null,
     }
   },
   created () {
@@ -199,16 +261,39 @@ export default {
     boolFormatter (bool) {
       return bool ? "check" : "times"
     },
-
     repairClass (state) {
       return state === 'must_repair' ? "must-repair" : "is-okay"
+    },
+    editArticle () {
+
+    },
+    confirmDeleteArticle (data) {
+      this.articleToDelete = data
+      this.askDelete = true
+    },
+    async deleteArticle () {
+      let res = await deleteArticle(this.articleToDelete.id)
+      if (res.data) {
+        this.articles.forEach(article => {
+          if (article.id === this.articleToDelete.id) {
+            article.deleted_at = res.data.deleted_at
+          }
+        })
+        this.articleToDelete = null
+        this.closeDialog()
+      }
+    },
+    closeDialog () {
+      this.askDelete = false
     }
+
   }
 }
 </script>
 
 <style scoped>
 .table {
+  background-color: #fff;
   border-radius: 15px;
   overflow: hidden;
 }
@@ -228,5 +313,10 @@ export default {
 
 .pi-check-circle {
   color: green !important;
+}
+
+.header-SR > .p-column-header-content {
+  width: max-content !important;
+  margin: auto !important;
 }
 </style>
