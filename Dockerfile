@@ -23,4 +23,4 @@ SHELL ["/bin/bash", "-c"]
 
 EXPOSE 8080
 # CMD [ "http-server", "dist" ]
-CMD [ "npm", "run", "serve" ]
+CMD [ "npx", "vue-cli-service", "serve" ]
