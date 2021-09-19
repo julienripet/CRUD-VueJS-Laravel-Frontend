@@ -65,7 +65,7 @@
           <Button
             type="button"
             icon="pi pi-filter-slash"
-            label="Clear"
+            label="Réinitialiser"
             class="p-button-outlined"
             @click="clearFilter()"
           />
