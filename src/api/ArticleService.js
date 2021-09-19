@@ -13,7 +13,7 @@ export const postArticle = async (article) => {
 }
 
 export const putArticle = async (article) => {
-    return await instance.put(`articles`, article)
+    return await instance.put(`articles/${article.id}`, article)
 }
 
 export const deleteArticle = async (id) => {
