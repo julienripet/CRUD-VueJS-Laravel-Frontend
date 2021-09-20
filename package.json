@@ -14,7 +14,8 @@
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primevue": "^3.7.2",
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "chokidar": "^3.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

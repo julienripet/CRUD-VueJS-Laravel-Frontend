@@ -6,6 +6,9 @@ WORKDIR /app
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
 
+RUN npm cache clean --force
+RUN npm update chokidar
+
 # install project dependencies
 RUN npm install
 
